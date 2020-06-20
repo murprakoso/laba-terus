@@ -1,10 +1,30 @@
 <?php
 
-
+// tambah data
 if (isset($_POST['tambah_data_penjualan'])) {
     if (tambahDataPenjualan($_POST) > 0) {
         $berhasil = true;
         echo "<meta http-equiv='refresh' content='1;URL=index.php?p=data-penjualan'>";
+    } else {
+        $gagal = true;
+    }
+}
+
+// ubah data
+if (isset($_POST['ubah_data_penjualan'])) {
+    if (ubahDataPenjualan($_POST) > 0) {
+        $berhasil = true;
+        echo '<meta http-equiv="refresh" content="1; url=?p=data-penjualan">';
+    } else {
+        $gagal = true;
+    }
+}
+
+// hapus data
+if (isset($_GET['hapus'])) {
+    if (hapusDataPenjualan($_GET) > 0) {
+        $berhasil = true;
+        echo '<meta http-equiv="refresh" content="1; url=index.php?p=data-penjualan">';
     } else {
         $gagal = true;
     }
@@ -14,22 +34,17 @@ if (isset($_POST['tambah_data_penjualan'])) {
 <div class="container">
     <div class="row">
 
+        <!-- Alert message -->
         <?php if (isset($berhasil)) : ?>
-            <div class="col-lg-12">
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <div class="col-md-12 mt-5" style="margin-bottom: -50px;">
+                <div class="alert alert-primary" role="alert">
                     <strong>Berhasil </strong> mengubah data !
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
                 </div>
             </div>
         <?php elseif (isset($gagal)) : ?>
-            <div class="col-lg-12">
-                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <div class="col-md-12 mt-5" style="margin-bottom: -50px;">
+                <div class="alert alert-danger" role="alert">
                     <strong>Gagal </strong> mengubah data, mohon periksa kembali data yang anda masukkan !
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
                 </div>
             </div>
         <?php endif; ?>
@@ -82,22 +97,22 @@ if (isset($_POST['tambah_data_penjualan'])) {
                                 <label for="example-search-input" class="col-3 col-form-label">BONUS</label>
                                 <div class="col-9 py-2">
                                     <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="bonus" id="exampleRadios2" value="1">
-                                        <label class="form-check-label mr-5" for="exampleRadios2">
+                                        <input class="form-check-input" type="radio" name="bonus" value="1">
+                                        <label class="form-check-label mr-5">
                                             Cangkir
                                         </label>
-                                        <input class="form-check-input" type="radio" name="bonus" id="exampleRadios2" value="2">
-                                        <label class="form-check-label" for="exampleRadios2">
+                                        <input class="form-check-input" type="radio" name="bonus" value="2">
+                                        <label class="form-check-label">
                                             Pensil
                                         </label>
                                     </div>
                                     <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="bonus" id="exampleRadios2" value="3">
-                                        <label class="form-check-label mr-5" for="exampleRadios2">
+                                        <input class="form-check-input" type="radio" name="bonus" value="3">
+                                        <label class="form-check-label mr-5">
                                             Buku
                                         </label>
-                                        <input class="form-check-input" type="radio" name="bonus" id="exampleRadios2" value="4">
-                                        <label class="form-check-label" for="exampleRadios2">
+                                        <input class="form-check-input" type="radio" name="bonus" value="4">
+                                        <label class="form-check-label">
                                             Kupon
                                         </label>
                                     </div>
@@ -105,7 +120,7 @@ if (isset($_POST['tambah_data_penjualan'])) {
                             </div>
 
                             <div class="text-center mb-3">
-                                <button class="btn btn-primary" name="tambah_data_penjualan">SIMPAN</button>
+                                <button type="submit" class="btn btn-primary" name="tambah_data_penjualan">SIMPAN</button>
                                 <input type="reset" class="btn btn-light" value="KOSONGKAN">
                             </div>
                         </form>
@@ -122,6 +137,16 @@ if (isset($_POST['tambah_data_penjualan'])) {
         halaman ubah data
         */ -->
         <?php elseif (isset($_GET['edit'])) : ?>
+            <?php
+            $id = $_GET['id'];
+            $dataPenjualan = mysqli_query($conn, "SELECT * FROM jual WHERE id='$id'");
+            if ($row = mysqli_fetch_assoc($dataPenjualan)) {
+                $kode = $row['kode'];
+                $qty = $row['qty'];
+                $disc = $row['disc'];
+                $bonus = $row['bonus'];
+            }
+            ?>
             <div class="col-md-8 offset-md-2 mt-5">
                 <div class="title text-center">
                     <h1>UBAH DATA PENJUALAN</h1>
@@ -133,29 +158,30 @@ if (isset($_POST['tambah_data_penjualan'])) {
                         <hr>
 
                         <form action="" method="POST">
+                            <input type="hidden" name="id" value="<?= $id; ?>">
                             <div class="form-group row">
                                 <label for="example-text-input" class="col-3 col-form-label">KODE BARANG</label>
                                 <div class="col-9">
                                     <select name="kode_brg" class="form-control" required>
                                         <option value="">- Pilih Kode -</option>
-                                        <option value="91-02-DEF">91-02-DEF</option>
-                                        <option value="92-01-ABC">92-01-ABC</option>
-                                        <option value="93-03-JKL">93-03-JKL</option>
-                                        <option value="94-02-ABC">94-02-ABC</option>
+                                        <option value="91-02-DEF" <?= ($kode == '91-02-DEF' ? 'selected' : ''); ?>>91-02-DEF</option>
+                                        <option value="92-01-ABC" <?= ($kode == '92-01-ABC' ? 'selected' : ''); ?>>92-01-ABC</option>
+                                        <option value="93-03-JKL" <?= ($kode == '93-03-JKL' ? 'selected' : ''); ?>>93-03-JKL</option>
+                                        <option value="94-02-ABC" <?= ($kode == '94-02-ABC' ? 'selected' : ''); ?>>94-02-ABC</option>
                                     </select>
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label for="example-search-input" class="col-3 col-form-label">QUANTITY</label>
                                 <div class="col-9">
-                                    <input class="form-control" type="number" min="1" value="1" name="qty">
+                                    <input class="form-control" type="number" min="1" value="<?= $qty; ?>" name="qty">
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label for="example-search-input" class="col-3 col-form-label">DISCOUNT</label>
                                 <div class="col-9 py-2" style="vertical-align: middle;">
                                     <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="1" name="discount">
+                                        <input class="form-check-input" type="checkbox" value="1" name="discount" <?= ($disc == 1 ? 'checked' : ''); ?>>
                                         <label class="form-check-label" for="defaultCheck1">
                                             8%
                                         </label>
@@ -166,22 +192,22 @@ if (isset($_POST['tambah_data_penjualan'])) {
                                 <label for="example-search-input" class="col-3 col-form-label">BONUS</label>
                                 <div class="col-9 py-2">
                                     <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="bonus" id="exampleRadios2" value="1">
-                                        <label class="form-check-label mr-5" for="exampleRadios2">
+                                        <input class="form-check-input" type="radio" name="bonus" value="1" <?= ($bonus == 1 ? 'checked' : ''); ?>>
+                                        <label class="form-check-label mr-5">
                                             Cangkir
                                         </label>
-                                        <input class="form-check-input" type="radio" name="bonus" id="exampleRadios2" value="2">
-                                        <label class="form-check-label" for="exampleRadios2">
+                                        <input class="form-check-input" type="radio" name="bonus" value="2" <?= ($bonus == 2 ? 'checked' : ''); ?>>
+                                        <label class="form-check-label">
                                             Pensil
                                         </label>
                                     </div>
                                     <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="bonus" id="exampleRadios2" value="3">
-                                        <label class="form-check-label mr-5" for="exampleRadios2">
+                                        <input class="form-check-input" type="radio" name="bonus" value="3" <?= ($bonus == 3 ? 'checked' : ''); ?>>
+                                        <label class="form-check-label mr-5">
                                             Buku
                                         </label>
-                                        <input class="form-check-input" type="radio" name="bonus" id="exampleRadios2" value="4">
-                                        <label class="form-check-label" for="exampleRadios2">
+                                        <input class="form-check-input" type="radio" name="bonus" value="4" <?= ($bonus == 4 ? 'checked' : ''); ?>>
+                                        <label class="form-check-label">
                                             Kupon
                                         </label>
                                     </div>
@@ -189,7 +215,7 @@ if (isset($_POST['tambah_data_penjualan'])) {
                             </div>
 
                             <div class="text-center mb-3">
-                                <button class="btn btn-primary">SIMPAN</button>
+                                <button type="submit" name="ubah_data_penjualan" class="btn btn-primary">SIMPAN</button>
                                 <input type="reset" class="btn btn-light" value="KOSONGKAN">
                             </div>
                         </form>
@@ -211,6 +237,7 @@ if (isset($_POST['tambah_data_penjualan'])) {
                 <div class="title text-center">
                     <h4>TABEL DATA PENJUALAN [ <a href="index.php">MENU UTAMA</a> ]</h4>
                 </div>
+
 
                 <div class="card">
                     <table class="table table-bordered">
@@ -325,8 +352,8 @@ if (isset($_POST['tambah_data_penjualan'])) {
                                     </td>
                                     <!-- Aksi -->
                                     <td>
-                                        <a href="index.php?p=data-penjualan&&edit&&id=<?= $row['kode']; ?>" class="badge badge-info">edit</a>
-                                        <a href="" class="badge badge-danger">hapus</a>
+                                        <a href="index.php?p=data-penjualan&edit&id=<?= $row['id']; ?>" class="badge badge-info">edit</a>
+                                        <a href="index.php?p=data-penjualan&hapus&id=<?= $row['id']; ?>" class="badge badge-danger" onclick="return confirm('Yakin ingin menghapus data?');">hapus</a>
                                     </td>
                                 </tr>
                             <?php endwhile; ?>

@@ -1,5 +1,7 @@
 <?php
-require 'functions.php';
+session_start();
+
+require 'function.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -13,9 +15,21 @@ require 'functions.php';
 
 <body class="bg-light">
 
+    <!-- Content -->
     <div style="min-height: 80vh;">
         <?php include 'content.php'; ?>
     </div>
+    <!-- /.Content -->
+
+    <!-- Script -->
+    <script type="text/javascript" src="./assets/js/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(document).on('dblclick', '.form-check-input', function() {
+            if (this.checked) {
+                $(this).prop('checked', false);
+            }
+        });
+    </script>
 
 </body>
 

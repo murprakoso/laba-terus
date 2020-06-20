@@ -10,7 +10,7 @@
                     <h5 class="card-title">PILIHAN ANDA :</h5>
                     <hr>
                     <div class="text-center">
-                        <h6><a href="index.php?p=data-penjualan&&tambah">TAMBAH DATA</a></h6>
+                        <h6><a href="index.php?p=data-penjualan&tambah">TAMBAH DATA</a></h6>
                         <h6><a href="index.php?p=data-penjualan">TAMPILKAN DATA</a></h6>
                     </div>
                 </div>
