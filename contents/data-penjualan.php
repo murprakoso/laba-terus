@@ -368,28 +368,27 @@ if (isset($_GET['hapus'])) {
                             <tr>
                                 <td>NIM </td>
                                 <td>: </td>
-                                <td>_ _ _ </td>
+                                <td>14420835</td>
                             </tr>
                             <tr>
                                 <td>NAMA </td>
                                 <td>: </td>
-                                <td>_ _ _ </td>
-
+                                <td>Albert Bria Liberty</td>
                             </tr>
                             <tr>
                                 <td>JUR/KELAS </td>
                                 <td>: </td>
-                                <td>_ _ _ /_ _ _ </td>
+                                <td>Teknik Informatika / 6A </td>
                             </tr>
                             <tr>
                                 <td>TIPE SOAL </td>
                                 <td>: </td>
-                                <td>_ _ _ </td>
+                                <td>A</td>
                             </tr>
                             <tr>
                                 <td>NO KOMP </td>
                                 <td>: </td>
-                                <td>_ _ _ </td>
+                                <td>1</td>
                             </tr>
                         </table>
                     </div>
