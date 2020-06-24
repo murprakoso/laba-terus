@@ -368,12 +368,12 @@ if (isset($_GET['hapus'])) {
                             <tr>
                                 <td>NIM </td>
                                 <td>: </td>
-                                <td>14420835</td>
+                                <td>18421187</td>
                             </tr>
                             <tr>
                                 <td>NAMA </td>
                                 <td>: </td>
-                                <td>Albert Bria Liberty</td>
+                                <td>Venna Salsabilla Marza</td>
                             </tr>
                             <tr>
                                 <td>JUR/KELAS </td>
@@ -388,7 +388,7 @@ if (isset($_GET['hapus'])) {
                             <tr>
                                 <td>NO KOMP </td>
                                 <td>: </td>
-                                <td>1</td>
+                                <td>40</td>
                             </tr>
                         </table>
                     </div>
